@@ -1,10 +1,10 @@
 
 import Link from "next/link";
 
-import { buttonVariants } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { homePath, ticketsPath } from "@/path";
 import { ThemeSwitcher } from "./thmes/theme-switcher";
-import { faMessageCheck } from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
+import { faMessageCheck } from "@awesome.me/kit-2c9d26a98e/icons/classic/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Header = () => {
@@ -20,17 +20,19 @@ const Header = () => {
       <div className="flex align-items gapx-2">
         <Link
           href={homePath()}
-          className={buttonVariants({ variant: "ghost" })}
+          className="flex align-items justify-center gap-x-2"
         >
-          <FontAwesomeIcon icon={faMessageCheck} />
-          <h1 className="text-lg font-semibold">TicketBounty</h1>
+          <div className="text-secondary">
+            <FontAwesomeIcon icon={faMessageCheck} className="w-5 h-5" />
+          </div>
+          <h1 className="text-lg font-semibold text-secondary">TicketBounty</h1>
         </Link>
        </div>
-       <div className="flex align-items gapx-2">
+       <div className="flex align-items-center justify-center gap-x-2">
         <ThemeSwitcher />
-        <Link href={ticketsPath()} className="default">
-          Tickets
-        </Link>
+        <Button variant="default" asChild>
+          <Link href={ticketsPath()}>Tickets</Link>
+        </Button>
       </div>
     </nav>
   );

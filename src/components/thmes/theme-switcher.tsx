@@ -12,7 +12,7 @@ const ThemeSwitcher = () => {
   return (
     <Button
      aria-label="Toggle theme"
-      variant="ghost"
+      variant="outline"
       size="icon"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
     >

@@ -31,7 +31,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
     <div
       className={clsx("w-full flex gap-x-1", {
         "max-w-[580px]": isDetail,
-        "max-w-[420px[": !isDetail,
+        "max-w-[420px]": !isDetail,
       })}
     >
       <Card key={ticket.id} className="w-full">
