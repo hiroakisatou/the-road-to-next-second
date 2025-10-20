@@ -1,4 +1,4 @@
-import type { Ticket } from "./types";
+import type { Ticket } from "./futures/ticket/types";
 
 export const initialTickets: Ticket[] = [
     {

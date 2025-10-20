@@ -1,8 +1,9 @@
 import { Placeholder } from "@/components/placeholder";
 import { Button } from "@/components/ui/button";
 import { initialTickets } from "@/data";
+import { TicketItem } from "@/futures/ticket/componrnts/ticket-item";
+import type { Ticket } from "@/futures/ticket/types";
 import { ticketsPath } from "@/path";
-import type { Ticket } from "@/types";
 import { Link } from "lucide-react";
 
 type TicketPageProps = {
@@ -30,9 +31,8 @@ const TicketPage = async ({ params }: TicketPageProps) => {
     );
   }
   return (
-    <div>
-      <h2 className="text-lg">{ticket.title}</h2>
-      <p className="text-sm">{ticket.description}</p>
+    <div className="flex justify-center animate-fade-from-top">
+      <TicketItem ticket={ticket} isDetail />
     </div>
   );
 };
