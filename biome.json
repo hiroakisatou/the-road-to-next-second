@@ -28,6 +28,7 @@
     }
   },
   "assist": {
+    "enabled": true,
     "actions": {
       "source": {
         "organizeImports": {
@@ -48,6 +49,9 @@
             ]
           }
         }
+      },
+      "quickFix": {
+        "addMissingImports": "on"
       }
     }
   }

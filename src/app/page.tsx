@@ -1,25 +1,17 @@
-import { LucideKanban } from "lucide-react";
 import Link from "next/link";
 
-import { buttonVariants } from "@/components/ui/button";
+import { Heading } from "@/components/heading";
 
 import { ticketsPath } from "@/path";
 
 const HomePage = () => {
   return (
     <div className="flex-1 flex flex-col gap-y-8">
-      <div>
-        <Link
-          href={ticketsPath()}
-          className={buttonVariants({ variant: "ghost" })}
-        >
-          <LucideKanban />
-          <h1 className="text-lg font-semibold">TicketBounty</h1>
-        </Link>
-      </div>
+      <Heading title="Home" description="Your home place to start" />
+
       <div className="flex-1 flex flex-col items-center">
-        <Link href={ticketsPath()} className="default">
-          View all tickets
+        <Link href={ticketsPath()} className="text-sm underline">
+          Go to Tickets
         </Link>
       </div>
     </div>
