@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ChangebleThemeProvider } from "@/components/thmes/changeble-theme-provider";
 import "./globals.css";
 
 
@@ -22,8 +23,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body className={`${inter.variable} antialiased`}>
+        <ChangebleThemeProvider>
         <Header />
         <main
           className="
@@ -36,6 +38,7 @@ export default function RootLayout({
         >
           {children}
         </main>
+        </ChangebleThemeProvider>
       </body>
     </html>
   );
