@@ -1,5 +1,9 @@
+import { Placeholder } from "@/components/placeholder";
+import { Button } from "@/components/ui/button";
 import { initialTickets } from "@/data";
+import { ticketsPath } from "@/path";
 import type { Ticket } from "@/types";
+import { Link } from "lucide-react";
 
 type TicketPageProps = {
   params: {
@@ -14,7 +18,16 @@ const TicketPage = async ({ params }: TicketPageProps) => {
   );
 
   if (!ticket) {
-    return <div>Ticket not found</div>;
+    return (
+      <Placeholder
+       label="Ticket not found"
+       button={
+         <Button asChild variant="outline" aria-label="go to tickets" role="link">
+            <Link href={ticketsPath()}>Go to Tickets</Link>
+         </Button>
+       }
+       />
+    );
   }
   return (
     <div>
