@@ -14,7 +14,7 @@ const Header = () => {
           supports-backdrop-blur:bg-background/60
           fixed left-0 right-0 top0 z-20
           border-b bg-background/95 backdrop-blur-2xl
-          w-full flex py-2.5 px-4 justify-between
+          w-full flex py-2.5 px-4 justify-between items-center
         "
     >
       <div className="flex align-items gapx-2">

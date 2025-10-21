@@ -1,10 +1,7 @@
-import { Placeholder } from "@/components/placeholder";
-import { Button } from "@/components/ui/button";
 import { TicketItem } from "@/futures/ticket/componrnts/ticket-item";
 import { getTicket } from "@/futures/ticket/queries";
-import type { Ticket } from "@/futures/ticket/types";
-import { ticketsPath } from "@/path";
-import Link from "next/link";
+import type { Ticket } from "@prisma/client";
+import { notFound } from "next/navigation";
 
 type TicketPageProps = {
   params: {
@@ -19,17 +16,7 @@ const TicketPage = async ({ params }: TicketPageProps) => {
 
 
   if (!ticket) {
-    return (
-      <Placeholder
-       label="Ticket not found"
-       button={(
-         <Button asChild variant="outline">
-            <Link href={ticketsPath()}>Go to Tickets</Link>
-         </Button>
-       )}
-
-       />
-    );
+    notFound();
   }
   return (
     <div className="flex justify-center animate-fade-from-top">

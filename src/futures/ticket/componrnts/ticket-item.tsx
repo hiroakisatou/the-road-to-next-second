@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import Link from "next/link";
 import { TICKET_ICONS } from "../constant";
-import { Ticket } from "../types";
+import { Ticket } from "@prisma/client";
 
 type TicketItemProps = {
   ticket: Ticket;
