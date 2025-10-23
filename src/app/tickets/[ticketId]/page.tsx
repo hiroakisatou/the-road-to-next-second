@@ -1,5 +1,6 @@
 import { TicketItem } from "@/futures/ticket/componrnts/ticket-item";
 import { getTicket } from "@/futures/ticket/queries";
+import { RedirectToast } from "@/components/redirect-toast";
 import type { Ticket } from "@prisma/client";
 import { notFound } from "next/navigation";
 
@@ -19,9 +20,12 @@ const TicketPage = async ({ params }: TicketPageProps) => {
     notFound();
   }
   return (
+    <>
     <div className="flex justify-center animate-fade-from-top">
       <TicketItem ticket={ticket} isDetail />
     </div>
+    <RedirectToast />
+    </>
   );
 };
 

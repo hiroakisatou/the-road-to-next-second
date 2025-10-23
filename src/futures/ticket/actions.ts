@@ -7,10 +7,15 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { fromErrorToActionState, toActionState } from "@/components/form/utils/to-action-state";
 import { ActionState } from "@/components/form/action-state-type";
+import { toCent } from "@/lib/curency";
+import { Ticket } from "@prisma/client";
+import { setCookiesByKey } from "@/actiohns/cookies";
 
 const upsertTicketSchema = z.object({
   title: z.string().min(1).max(192),
   description: z.string().min(1).max(1024),
+  deadline: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Is required"),
+  bounty: z.coerce.number().positive(),
 });
 
 const deleteTicket = async (id: string) => {
@@ -19,42 +24,36 @@ const deleteTicket = async (id: string) => {
       id,
     },
   });
+  await setCookiesByKey("toast", "Ticket deleted");
   redirect(ticketsPath());
 };
 
-// create ticket action is change to include upsert func
-// const createTicket = async (formData: FormData) => {
-//   const data = {
-//     title: formData.get('title'),
-//     description: formData.get('description'),
-//   };
-
-//   await prisma.ticket.create({
-//     data: {
-//       title: data.title as string,
-//       description: data.description as string,
-//     },
-//   });
-
-//   revalidatePath(ticketsPath());
-// }
-
 const upsertTicket = async (
   id: string | undefined,
-  prevState: ActionState,
+  _actionState: ActionState,
   formData: FormData,
 ) => {
   try {
   const data = upsertTicketSchema.parse({
       title: formData.get('title'),
       description: formData.get('description'),
+      deadline: formData.get('deadline'),
+      bounty: formData.get("bounty"),
     });
 
-  await prisma.ticket.upsert({
+
+  const dbData = {
+    ...data,
+    bounty: toCent(data.bounty),
+  }
+
+
+　 await prisma.ticket.upsert({
     where: { id: id || '' },
-    create: data,
-    update: data,
+    create: dbData,
+    update: dbData,
   });
+
 } catch (error) {
   return fromErrorToActionState(error, formData);
 }
@@ -62,6 +61,7 @@ const upsertTicket = async (
   revalidatePath(ticketsPath());
 
   if (id) {
+    await setCookiesByKey("toast", "Ticket updated");
     redirect(ticketPath(id));
   }
 
