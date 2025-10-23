@@ -1,15 +1,15 @@
-import { Button } from '@/components/ui/button';
+import { ActionState, EMPTY_ACTION_STATE } from '@/components/form/action-state-type';
+import { FieldError } from '@/components/form/field-error';
+import { useActionFeedback } from '@/components/form/hooks/use-action-feedback';
+import { SubmitButton } from '@/components/sujbmit-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Ticket } from '@prisma/client';
 import { useActionState, useId } from 'react';
+import { toast } from 'sonner';
 import { upsertTicket } from '../actions';
-import { SubmitButton } from '@/components/sujbmit-button';
-import { EMPTY_ACTION_STATE } from '@/components/form/action-state-type';
-import { ActionState } from '@/components/form/action-state-type';
-import { FieldError } from '@/components/form/field-error';
-
+import { Form } from '@/components/form/form';
 type TicketUpsertFormProps = {
   ticket?: Ticket;
 }
@@ -28,9 +28,7 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
   );
 
   return (
-    <form
-      action={action} className='flex flex-col gap-y-2'>
-
+    <Form action={action} actionState={actionState}>
       <Label htmlFor={titleId}>Title</Label>
       <Input id={titleId} name='title' type="text" defaultValue={
         (actionState.payload?.get('title') as string) ?? ticket?.title} />
@@ -42,8 +40,8 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
       <FieldError actionState={actionState} fieldName='description' />
 
       <SubmitButton label={ticket ? "Edit" : "Create"} isPending={isPending} />
-    </form>
-  )
+    </Form>
+  );
 }
 
 export { TicketUpsertForm };
