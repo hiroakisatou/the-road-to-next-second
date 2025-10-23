@@ -5,13 +5,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ticketPath } from "@/path";
-import { faArrowUpRightFromSquare } from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
+import { ticketPath, ticketEditPath } from "@/path";
+import {
+  faArrowUpRightFromSquare,
+  faTrashCan,
+  faPencil
+} from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import Link from "next/link";
 import { TICKET_ICONS } from "../constant";
 import { Ticket } from "@prisma/client";
+import { deleteTicket } from "@/futures/ticket/actions";
 
 type TicketItemProps = {
   ticket: Ticket;
@@ -27,6 +32,23 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       </Link>
     </Button>
   );
+
+  const editButton = (
+    <Button variant="outline" size="icon" asChild>
+      <Link href={ticketEditPath(ticket.id)} aria-label="edit" role="button">
+        <FontAwesomeIcon icon={faPencil} />
+      </Link>
+    </Button>
+  );
+
+  const deleteButton = (
+    <form action={deleteTicket.bind(null, ticket.id)}>
+      <Button variant="outline" size="icon" type="submit">
+        <FontAwesomeIcon icon={faTrashCan} />
+      </Button>
+    </form>
+  );
+
   return (
     <div
       className={clsx("w-full flex gap-x-1", {
@@ -49,9 +71,20 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
           </span>
         </CardContent>
       </Card>
-      {isDetail ? null : (
-        <div className="flex flex-col gap-y-1">{detailButton}</div>
-      )}
+
+        <div className="flex flex-col gap-y-1">
+          {isDetail ? (
+            <>
+              {editButton}
+              {deleteButton}
+            </>
+          ) : (
+            <>
+              {detailButton}
+              {editButton}
+            </>
+          )}
+        </div>
     </div>
   );
 };
