@@ -25,6 +25,10 @@ type TicketItemProps = {
 
 const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
 
+  const handleDelete = async (formData: FormData) => {
+    await deleteTicket(ticket.id);
+  }
+
   const detailButton = (
     <Button variant="outline" size="icon" asChild>
       <Link href={ticketPath(ticket.id)} aria-label="view detail" role="button">
@@ -42,7 +46,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
   );
 
   const deleteButton = (
-    <form action={deleteTicket.bind(null, ticket.id)}>
+    <form action={handleDelete}>
       <Button variant="outline" size="icon" type="submit">
         <FontAwesomeIcon icon={faTrashCan} />
       </Button>
