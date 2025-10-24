@@ -1,17 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { ticketsPath } from "@/path";
 import Link from "next/link";
+
 import { Placeholder } from "@/components/placeholder";
+import { Button } from "@/components/ui/button";
+
+import { ticketsPath } from "@/path";
 
 export default function NotFound() {
   return (
     <Placeholder
       label="Ticket not found"
-      button={(
+      button={
         <Button asChild variant="outline">
           <Link href={ticketsPath()}>Go to Tickets</Link>
         </Button>
-      )}
+      }
     />
-  )
+  );
 }

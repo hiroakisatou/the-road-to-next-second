@@ -1,7 +1,13 @@
-import { ActionState, ActionStateStatus } from "@/components/form/action-state-type";
 import z, { ZodError } from "zod";
 
-export const fromErrorToActionState = (error: unknown, formDate?: FormData): ActionState => {
+import type {
+  ActionState,
+  ActionStateStatus,
+} from "@/components/form/action-state-type";
+
+export const fromErrorToActionState = (
+  error: unknown
+): ActionState => {
   if (error instanceof ZodError) {
     return {
       status: "ERROR",
@@ -26,12 +32,14 @@ export const fromErrorToActionState = (error: unknown, formDate?: FormData): Act
   }
 };
 
-
-export const toActionState = (status: ActionStateStatus, message: string): ActionState => {
+export const toActionState = (
+  status: ActionStateStatus,
+  message: string,
+): ActionState => {
   return {
     status,
     message,
-    fieldErrors:{},
+    fieldErrors: {},
     timestamp: Date.now(),
   };
-}
+};

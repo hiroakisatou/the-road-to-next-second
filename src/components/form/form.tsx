@@ -1,6 +1,8 @@
-import { useActionFeedback } from "@/components/form/hooks/use-action-feedback";
 import { toast } from "sonner";
-import { ActionState } from "./action-state-type";
+
+import { useActionFeedback } from "@/components/form/hooks/use-action-feedback";
+
+import type { ActionState } from "./action-state-type";
 
 type FormProps = {
   action: (payload: FormData) => void;
@@ -8,9 +10,15 @@ type FormProps = {
   children: React.ReactNode;
   onSuccess?: (actionState: ActionState) => void;
   onError?: (actionState: ActionState) => void;
-}
+};
 
-const Form = ({ action, actionState, children, onSuccess, onError }: FormProps) => {
+const Form = ({
+  action,
+  actionState,
+  children,
+  onSuccess,
+  onError,
+}: FormProps) => {
   useActionFeedback(actionState, {
     onSuccess: ({ actionState }) => {
       if (actionState.message) {
@@ -23,7 +31,7 @@ const Form = ({ action, actionState, children, onSuccess, onError }: FormProps) 
         toast.error(actionState.message);
       }
       onError?.(actionState);
-    }
+    },
   });
 
   return (

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useEffectEvent, useRef } from "react";
-import { ActionState } from "../action-state-type";
+
+import type { ActionState } from "../action-state-type";
 
 type onArgs = {
   actionState: ActionState;
@@ -12,10 +13,12 @@ type useActionFeedbackOptions = {
   onError?: (args: onArgs) => void;
 };
 
-
-export const useActionFeedback = (actionState: ActionState, options: useActionFeedbackOptions) => {
-   const prevTimestamp = useRef(actionState.timestamp);
-   const isUpdate = prevTimestamp.current !== actionState.timestamp;
+export const useActionFeedback = (
+  actionState: ActionState,
+  options: useActionFeedbackOptions,
+) => {
+  const prevTimestamp = useRef(actionState.timestamp);
+  const isUpdate = prevTimestamp.current !== actionState.timestamp;
 
   useEffect(() => {
     if (!isUpdate) return;

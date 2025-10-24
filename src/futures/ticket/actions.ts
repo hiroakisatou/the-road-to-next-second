@@ -1,15 +1,21 @@
-'use server';
+"use server";
 
-import { ActionState } from "@/components/form/action-state-type";
-import { fromErrorToActionState, toActionState } from "@/components/form/utils/to-action-state";
-import { setCookiesByKey } from "@/lib/cookies";
-import { toCent } from "@/lib/curency";
-import { prisma } from "@/lib/prisma";
-import { ticketPath, ticketsPath } from "@/path";
-import { TicketStatus } from "@prisma/client";
+import type { TicketStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+
+import type { ActionState } from "@/components/form/action-state-type";
+import {
+  fromErrorToActionState,
+  toActionState,
+} from "@/components/form/utils/to-action-state";
+
+import { setCookiesByKey } from "@/lib/cookies";
+import { toCent } from "@/lib/curency";
+import { prisma } from "@/lib/prisma";
+
+import { ticketPath, ticketsPath } from "@/path";
 
 const upsertTicketSchema = z.object({
   title: z.string().min(1).max(192),
@@ -34,29 +40,26 @@ const upsertTicket = async (
   formData: FormData,
 ) => {
   try {
-  const data = upsertTicketSchema.parse({
-      title: formData.get('title'),
-      description: formData.get('description'),
-      deadline: formData.get('deadline'),
+    const data = upsertTicketSchema.parse({
+      title: formData.get("title"),
+      description: formData.get("description"),
+      deadline: formData.get("deadline"),
       bounty: formData.get("bounty"),
     });
 
+    const dbData = {
+      ...data,
+      bounty: toCent(data.bounty),
+    };
 
-  const dbData = {
-    ...data,
-    bounty: toCent(data.bounty),
+    await prisma.ticket.upsert({
+      where: { id: id || "" },
+      create: dbData,
+      update: dbData,
+    });
+  } catch (error) {
+    return fromErrorToActionState(error);
   }
-
-
-　 await prisma.ticket.upsert({
-    where: { id: id || '' },
-    create: dbData,
-    update: dbData,
-  });
-
-} catch (error) {
-  return fromErrorToActionState(error, formData);
-}
 
   revalidatePath(ticketsPath());
 
@@ -66,7 +69,7 @@ const upsertTicket = async (
   }
 
   return toActionState("SUCCESS", "Ticket created");
-}
+};
 
 const updateTicketStatus = async (id: string, status: TicketStatus) => {
   // await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -82,8 +85,6 @@ const updateTicketStatus = async (id: string, status: TicketStatus) => {
   revalidatePath(ticketPath(id));
 
   return toActionState("SUCCESS", "Ticket status updated");
-  }
-
+};
 
 export { deleteTicket, updateTicketStatus, upsertTicket };
-

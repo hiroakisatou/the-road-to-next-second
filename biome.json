@@ -12,13 +12,15 @@
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
+    "lineWidth": 80
   },
   "javascript": {
     "formatter": {
       "semicolons": "always",
       "bracketSpacing": true,
-      "trailingCommas": "all"
+      "trailingCommas": "all",
+      "arrowParentheses": "always"
     }
   },
   "linter": {
@@ -27,6 +29,9 @@
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off"
+      },
+      "style": {
+        "useImportType": "error"
       }
     },
     "domains": {
@@ -56,9 +61,6 @@
             ]
           }
         }
-      },
-      "quickFix": {
-        "addMissingImports": "on"
       }
     }
   }

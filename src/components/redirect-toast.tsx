@@ -1,9 +1,10 @@
 "use client";
 
-import { deleteCookiesByKey, getCookiesByKey } from "@/lib/cookies";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
+
+import { deleteCookiesByKey, getCookiesByKey } from "@/lib/cookies";
 
 export const RedirectToast = () => {
   const pathname = usePathname();

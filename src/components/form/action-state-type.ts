@@ -4,7 +4,7 @@ export type ActionState = {
   status?: ActionStateStatus;
   message?: string;
   payload?: FormData;
-  fieldErrors?: Record<string,  string[] | undefined >;
+  fieldErrors?: Record<string, string[] | undefined>;
   timestamp: number;
 };
 

@@ -1,11 +1,10 @@
-
-import Link from "next/link";
-
-import { Button, buttonVariants } from "./ui/button";
-import { homePath, ticketsPath } from "@/path";
-import { ThemeSwitcher } from "./thmes/theme-switcher";
 import { faMessageCheck } from "@awesome.me/kit-2c9d26a98e/icons/classic/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
+
+import { ThemeSwitcher } from "./thmes/theme-switcher";
+import { Button } from "./ui/button";
+import { homePath, ticketsPath } from "@/path";
 
 const Header = () => {
   return (
@@ -27,8 +26,8 @@ const Header = () => {
           </div>
           <h1 className="text-lg font-semibold text-secondary">TicketBounty</h1>
         </Link>
-       </div>
-       <div className="flex align-items-center justify-center gap-x-2">
+      </div>
+      <div className="flex align-items-center justify-center gap-x-2">
         <ThemeSwitcher />
         <Button variant="default" asChild>
           <Link href={ticketsPath()}>Tickets</Link>

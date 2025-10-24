@@ -1,3 +1,15 @@
+import {
+  faArrowUpRightFromSquare,
+  faEllipsisVertical,
+  faPencil,
+  faTrashCan,
+} from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { Ticket } from "@prisma/client";
+import clsx from "clsx";
+import Link from "next/link";
+
+import { ConfirmDialog } from "@/components/confirm-daialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -6,20 +18,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
+import { toCurrencyFormCent } from "@/lib/curency";
+
 import { deleteTicket } from "@/futures/ticket/actions";
 import { TicketMooreMenu } from "@/futures/ticket/componrnts/ticket-more-menuju";
-import { toCurrencyFormCent } from "@/lib/curency";
 import { ticketEditPath, ticketPath } from "@/path";
-import {
-  faArrowUpRightFromSquare,
-  faEllipsisVertical,
-  faPencil,
-  faTrashCan
-} from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Ticket } from "@prisma/client";
-import clsx from "clsx";
-import Link from "next/link";
 import { TICKET_ICONS } from "../constant";
 
 type TicketItemProps = {
@@ -29,10 +33,10 @@ type TicketItemProps = {
 
 const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
 
-  const handleDelete = async (formData: FormData) => {
+  const handleDelete = async (_formData: FormData) => {
     "use server";
     await deleteTicket(ticket.id);
-  }
+  };
 
   const detailButton = (
     <Button variant="outline" size="icon" asChild>
@@ -41,7 +45,6 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       </Link>
     </Button>
   );
-
   const editButton = (
     <Button variant="outline" size="icon" asChild>
       <Link href={ticketEditPath(ticket.id)} aria-label="edit" role="button">
@@ -51,11 +54,14 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
   );
 
   const deleteButton = (
-    <form action={handleDelete}>
-      <Button variant="outline" size="icon" type="submit">
-        <FontAwesomeIcon icon={faTrashCan} />
-      </Button>
-    </form>
+    <ConfirmDialog
+      action={handleDelete}
+      trigger={
+        <Button variant="outline" size="icon" aria-label="delete item" role="button">
+            <FontAwesomeIcon icon={faTrashCan} />
+        </Button>
+      }
+    />
   );
 
   const moreMenu = (
@@ -69,7 +75,6 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
     />
   );
 
-
   return (
     <div
       className={clsx("w-full flex gap-x-1", {
@@ -80,18 +85,24 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       <Card key={ticket.id} className="w-full">
         <CardHeader>
           <CardTitle className="flex gap-x-4 items-center">
-            <div className="size-8"><FontAwesomeIcon icon={TICKET_ICONS[ticket.status]} size="2xl"/></div>
-            <div className="truncate text-2xl font-semibold">{ticket.title}</div>
+            <div className="size-8">
+              <FontAwesomeIcon icon={TICKET_ICONS[ticket.status]} size="2xl" />
+            </div>
+            <div className="truncate text-2xl font-semibold">
+              {ticket.title}
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <span className={clsx("whitespace-break-spaces", {
-            "line-clamp-3": !isDetail,
-          })}>
+          <span
+            className={clsx("whitespace-break-spaces", {
+              "line-clamp-3": !isDetail,
+            })}
+          >
             {ticket.description}
           </span>
         </CardContent>
-        <CardFooter className="flex justify-between" >
+        <CardFooter className="flex justify-between">
           <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
           <p className="text-sm text-muted-foreground">
             {toCurrencyFormCent(ticket.bounty)}
@@ -99,20 +110,20 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
         </CardFooter>
       </Card>
 
-        <div className="flex flex-col gap-y-1">
-          {isDetail ? (
-            <>
-              {editButton}
-              {deleteButton}
-              {moreMenu}
-            </>
-          ) : (
-            <>
-              {detailButton}
-              {editButton}
-            </>
-          )}
-        </div>
+      <div className="flex flex-col gap-y-1">
+        {isDetail ? (
+          <>
+            {editButton}
+            {deleteButton}
+            {moreMenu}
+          </>
+        ) : (
+          <>
+            {detailButton}
+            {editButton}
+          </>
+        )}
+      </div>
     </div>
   );
 };

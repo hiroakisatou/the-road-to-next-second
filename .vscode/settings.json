@@ -8,11 +8,7 @@
     ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
     ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ],
-  "tailwindCSS.classAttributes": [
-    "class",
-    "className",
-    "ngClass"
-  ],
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass"],
   "tailwindCSS.files.exclude": [
     "**/.git/**",
     "**/node_modules/**",

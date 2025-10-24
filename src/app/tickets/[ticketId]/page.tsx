@@ -1,7 +1,8 @@
-import { TicketItem } from "@/futures/ticket/componrnts/ticket-item";
-import { getTicket } from "@/futures/ticket/queries";
 import type { Ticket } from "@prisma/client";
 import { notFound } from "next/navigation";
+
+import { TicketItem } from "@/futures/ticket/componrnts/ticket-item";
+import { getTicket } from "@/futures/ticket/queries";
 
 type TicketPageProps = {
   params: {
@@ -10,10 +11,8 @@ type TicketPageProps = {
 };
 
 const TicketPage = async ({ params }: TicketPageProps) => {
-
   const { ticketId } = await params;
-  const ticket:Ticket | null = await getTicket(ticketId);
-
+  const ticket: Ticket | null = await getTicket(ticketId);
 
   if (!ticket) {
     notFound();

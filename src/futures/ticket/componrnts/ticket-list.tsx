@@ -1,5 +1,5 @@
-import { getTickets } from "../queries";
 import { TicketItem } from "./ticket-item";
+import { getTickets } from "../queries";
 
 const TicketList = async () => {
   const tickets = await getTickets();

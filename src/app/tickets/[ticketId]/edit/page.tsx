@@ -1,18 +1,20 @@
+import type { Ticket } from "@prisma/client";
+import { notFound } from "next/navigation";
+
 import { CardCompact } from "@/components/card-compact";
+
 import { TicketUpsertForm } from "@/futures/ticket/componrnts/ticket-upsert-form.";
 import { getTicket } from "@/futures/ticket/queries";
-import { Ticket } from "@prisma/client";
-import { notFound } from "next/navigation";
 
 type EditTicketPageProps = {
   params: Promise<{
-    ticketId: string
+    ticketId: string;
   }>;
 };
 
 const EditTicketPage = async ({ params }: EditTicketPageProps) => {
   const { ticketId } = await params;
-  const ticket:Ticket | null = await getTicket(ticketId);
+  const ticket: Ticket | null = await getTicket(ticketId);
 
   if (!ticket) {
     notFound();
