@@ -69,6 +69,7 @@ const upsertTicket = async (
 }
 
 const updateTicketStatus = async (id: string, status: TicketStatus) => {
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
   try {
     await prisma.ticket.update({
       where: { id },
@@ -84,4 +85,5 @@ const updateTicketStatus = async (id: string, status: TicketStatus) => {
   }
 
 
-export { deleteTicket, upsertTicket, updateTicketStatus };
+export { deleteTicket, updateTicketStatus, upsertTicket };
+
