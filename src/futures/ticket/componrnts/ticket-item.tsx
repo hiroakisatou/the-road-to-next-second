@@ -76,7 +76,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
             {ticket.description}
           </span>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex justify-between" >
           <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
           <p className="text-sm text-muted-foreground">
             {toCurrencyFormCent(ticket.bounty)}

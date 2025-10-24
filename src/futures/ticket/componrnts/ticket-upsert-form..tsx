@@ -1,6 +1,7 @@
+"use client";
+
 import { ActionState, EMPTY_ACTION_STATE } from '@/components/form/action-state-type';
 import { FieldError } from '@/components/form/field-error';
-import { useActionFeedback } from '@/components/form/hooks/use-action-feedback';
 import { SubmitButton } from '@/components/sujbmit-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
