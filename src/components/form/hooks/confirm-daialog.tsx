@@ -1,5 +1,7 @@
 "use client";
 
+import { useImperativeHandle, useState } from "react";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,11 +15,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-type ConfirmDialogProps = {
+import type { ImperativeHandleFromConfirmDialog } from "@/futures/ticket/componrnts/menu-dialog-associates";
+
+type UseConfirmDialogArgs = {
   title?: string;
   description?: string;
   action: (payload: FormData) => void;
-  trigger: React.ReactElement;
+  trigger?: React.ReactElement;
+  imperativeHandleRef: React.RefObject<ImperativeHandleFromConfirmDialog | null>;
 };
 
 const ConfirmDialog = ({
@@ -25,10 +30,23 @@ const ConfirmDialog = ({
   description = "This action cannot be undone. Make sure you understand the consqquences.",
   action,
   trigger,
-}: ConfirmDialogProps) => {
+  imperativeHandleRef
+}: UseConfirmDialogArgs) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+
+  useImperativeHandle(imperativeHandleRef, () => ({
+    show: () => {
+      setIsOpen(true);
+    },
+    hide: () => {
+      setIsOpen(false);
+    },
+  }));
+
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+      {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>

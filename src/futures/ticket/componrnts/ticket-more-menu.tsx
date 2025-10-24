@@ -1,14 +1,11 @@
 "use client";
 
-import { faTrashCan } from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { Ticket, TicketStatus } from "@prisma/client";
 import { toast } from "sonner";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
@@ -21,15 +18,10 @@ import { TICKET_STATUS_LABELS } from "../constant";
 type TicketMooreMenuProps = {
   ticket: Ticket;
   trigger: React.ReactElement;
+  deleteButton: React.ReactElement;
 };
 
-const TicketMooreMenu = ({ ticket, trigger }: TicketMooreMenuProps) => {
-  const deleteButton = (
-    <DropdownMenuItem>
-      <FontAwesomeIcon icon={faTrashCan} />
-      <span>Delete</span>
-    </DropdownMenuItem>
-  );
+const TicketMooreMenu = ({ ticket, trigger, deleteButton }: TicketMooreMenuProps) => {
 
   const handleUpdateTicketStatus = async (value: string) => {
     const promise = updateTicketStatus(ticket.id, value as TicketStatus);

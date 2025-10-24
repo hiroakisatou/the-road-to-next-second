@@ -2,14 +2,12 @@ import {
   faArrowUpRightFromSquare,
   faEllipsisVertical,
   faPencil,
-  faTrashCan,
 } from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { Ticket } from "@prisma/client";
 import clsx from "clsx";
 import Link from "next/link";
 
-import { ConfirmDialog } from "@/components/confirm-daialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,8 +19,7 @@ import {
 
 import { toCurrencyFormCent } from "@/lib/curency";
 
-import { deleteTicket } from "@/futures/ticket/actions";
-import { TicketMooreMenu } from "@/futures/ticket/componrnts/ticket-more-menuju";
+import { MenuDialogAssociates } from "@/futures/ticket/componrnts/menu-dialog-associates";
 import { ticketEditPath, ticketPath } from "@/path";
 import { TICKET_ICONS } from "../constant";
 
@@ -33,10 +30,7 @@ type TicketItemProps = {
 
 const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
 
-  const handleDelete = async (_formData: FormData) => {
-    "use server";
-    await deleteTicket(ticket.id);
-  };
+
 
   const detailButton = (
     <Button variant="outline" size="icon" asChild>
@@ -53,20 +47,10 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
     </Button>
   );
 
-  const deleteButton = (
-    <ConfirmDialog
-      action={handleDelete}
-      trigger={
-        <Button variant="outline" size="icon" aria-label="delete item" role="button">
-            <FontAwesomeIcon icon={faTrashCan} />
-        </Button>
-      }
-    />
-  );
 
   const moreMenu = (
-    <TicketMooreMenu
-      trigger={
+    <MenuDialogAssociates
+      menuTrigger={
         <Button variant="outline" size="icon" asChild className="p-2">
           <FontAwesomeIcon icon={faEllipsisVertical} />
         </Button>
@@ -114,7 +98,6 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
         {isDetail ? (
           <>
             {editButton}
-            {deleteButton}
             {moreMenu}
           </>
         ) : (
