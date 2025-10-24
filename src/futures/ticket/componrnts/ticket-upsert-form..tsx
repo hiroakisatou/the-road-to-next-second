@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { upsertTicket } from '../actions';
 import { Form } from '@/components/form/form';
 import { fromCent } from '@/lib/curency';
+import { DatePicker } from '@/components/date-picker';
 type TicketUpsertFormProps = {
   ticket?: Ticket;
 }
@@ -44,7 +45,7 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
       <div className="flex gap-x-2 mb-1">
         <div className="w-1/2">
           <Label htmlFor={deadlineId}>Deadline</Label>
-          <Input id={deadlineId} name='deadline' type="date" defaultValue={
+          <DatePicker id={deadlineId} name='deadline' defaultValue={
             (actionState.payload?.get('deadline') as string) ?? ticket?.deadline} />
           <FieldError actionState={actionState} fieldName='deadline' />
         </div>
@@ -55,7 +56,7 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
           <FieldError actionState={actionState} fieldName='bounty' />
         </div>
       </div>
-      
+
       <SubmitButton label={ticket ? "Edit" : "Create"} isPending={isPending} />
     </Form>
   );

@@ -1,10 +1,12 @@
+import { ChangebleThemeProvider } from "@/components/thmes/changeble-theme-provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ChangebleThemeProvider } from "@/components/thmes/changeble-theme-provider";
 import "./globals.css";
 
 
 import { Header } from "@/components/header";
+import { RedirectToast } from "@/components/redirect-toast";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,6 +40,8 @@ export default function RootLayout({
         >
           {children}
         </main>
+        <Toaster  />
+        <RedirectToast />
         </ChangebleThemeProvider>
       </body>
     </html>

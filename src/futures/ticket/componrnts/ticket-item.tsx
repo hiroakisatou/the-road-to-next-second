@@ -2,21 +2,23 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ticketPath, ticketEditPath } from "@/path";
+import { deleteTicket } from "@/futures/ticket/actions";
+import { toCurrencyFormCent } from "@/lib/curency";
+import { ticketEditPath, ticketPath } from "@/path";
 import {
   faArrowUpRightFromSquare,
-  faTrashCan,
-  faPencil
+  faPencil,
+  faTrashCan
 } from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Ticket } from "@prisma/client";
 import clsx from "clsx";
 import Link from "next/link";
 import { TICKET_ICONS } from "../constant";
-import { Ticket } from "@prisma/client";
-import { deleteTicket } from "@/futures/ticket/actions";
 
 type TicketItemProps = {
   ticket: Ticket;
@@ -74,6 +76,12 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
             {ticket.description}
           </span>
         </CardContent>
+        <CardFooter>
+          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">
+            {toCurrencyFormCent(ticket.bounty)}
+          </p>
+        </CardFooter>
       </Card>
 
         <div className="flex flex-col gap-y-1">
