@@ -6,6 +6,7 @@ import { setCookiesByKey } from "@/lib/cookies";
 import { toCent } from "@/lib/curency";
 import { prisma } from "@/lib/prisma";
 import { ticketPath, ticketsPath } from "@/path";
+import { TicketStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -67,5 +68,20 @@ const upsertTicket = async (
   return toActionState("SUCCESS", "Ticket created");
 }
 
+const updateTicketStatus = async (id: string, status: TicketStatus) => {
+  try {
+    await prisma.ticket.update({
+      where: { id },
+      data: { status },
+    });
+  } catch (error) {
+    return fromErrorToActionState(error);
+  }
 
-export { deleteTicket, upsertTicket };
+  revalidatePath(ticketPath(id));
+
+  return toActionState("SUCCESS", "Ticket status updated");
+  }
+
+
+export { deleteTicket, upsertTicket, updateTicketStatus };

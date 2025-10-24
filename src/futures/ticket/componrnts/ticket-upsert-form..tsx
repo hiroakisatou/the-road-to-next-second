@@ -7,12 +7,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Ticket } from '@prisma/client';
-import { useActionState, useId } from 'react';
+import { useActionState, useId, useRef } from 'react';
 import { toast } from 'sonner';
 import { upsertTicket } from '../actions';
 import { Form } from '@/components/form/form';
 import { fromCent } from '@/lib/curency';
-import { DatePicker } from '@/components/date-picker';
+import { DatePicker, ImperativeHandleFromDatePicker } from '@/components/date-picker';
 type TicketUpsertFormProps = {
   ticket?: Ticket;
 }
@@ -32,8 +32,14 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
     EMPTY_ACTION_STATE,
   );
 
+  const datePcikerImperativeHandleRef = useRef<ImperativeHandleFromDatePicker>(null);
+
+  const handleSuccess = () => {
+    datePcikerImperativeHandleRef.current?.reset();
+  }
+
   return (
-    <Form action={action} actionState={actionState}>
+    <Form action={action} actionState={actionState} onSuccess={handleSuccess}>
       <Label htmlFor={titleId}>Title</Label>
       <Input id={titleId} name='title' type="text" defaultValue={
         (actionState.payload?.get('title') as string) ?? ticket?.title} />
@@ -46,13 +52,18 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
       <div className="flex gap-x-2 mb-1">
         <div className="w-1/2">
           <Label htmlFor={deadlineId}>Deadline</Label>
-          <DatePicker id={deadlineId} name='deadline' defaultValue={
-            (actionState.payload?.get('deadline') as string) ?? ticket?.deadline} />
+          <DatePicker
+            id={deadlineId}
+            name='deadline'
+            defaultValue={
+              (actionState.payload?.get('deadline') as string) ?? ticket?.deadline}
+            imeprativeHandleRef={datePcikerImperativeHandleRef}
+            />
           <FieldError actionState={actionState} fieldName='deadline' />
         </div>
         <div className="w-1/2">
           <Label htmlFor={bountyId}>Bounty</Label>
-          <Input id={bountyId} name='bounty' type="number" defaultValue={
+          <Input id={bountyId} name='bounty' type="number" step="0.01" defaultValue={
             (actionState.payload?.get('bounty') as string) ?? (ticket?.bounty ? fromCent(ticket.bounty) : "")} />
           <FieldError actionState={actionState} fieldName='bounty' />
         </div>

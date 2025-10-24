@@ -6,15 +6,18 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { faCalendarDays } from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useImperativeHandle, useState } from "react";
 
+export type ImperativeHandleFromDatePicker = {
+  reset: () => void;
+}
 type DatePickerProps = {
   id: string;
   name: string;
-  defaultValue?: string | undefined;
-};
-
-const DatePicker = ({ id, name, defaultValue }: DatePickerProps) => {
+  defaultValue: string;
+  imeprativeHandleRef?: React.RefObject<ImperativeHandleFromDatePicker | null>;
+}
+const DatePicker = ({ id, name, defaultValue, imeprativeHandleRef }: DatePickerProps) => {
   const [date, setDate] = useState<Date | undefined>(
     defaultValue ? new Date(defaultValue) : new Date()
   );
@@ -28,6 +31,13 @@ const DatePicker = ({ id, name, defaultValue }: DatePickerProps) => {
     setDate(selectedDate);
     setIsOpen(false);
   };
+
+
+  useImperativeHandle(imeprativeHandleRef, () => ({
+    reset: () => {
+      setDate(new Date());
+    }
+  }));
   const formatedStringDate = date ? format(date, "yyyy-MM-dd") : "";
 
   return (

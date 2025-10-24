@@ -7,10 +7,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { deleteTicket } from "@/futures/ticket/actions";
+import { TicketMooreMenu } from "@/futures/ticket/componrnts/ticket-more-menuju";
 import { toCurrencyFormCent } from "@/lib/curency";
 import { ticketEditPath, ticketPath } from "@/path";
 import {
   faArrowUpRightFromSquare,
+  faEllipsisVertical,
   faPencil,
   faTrashCan
 } from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
@@ -28,6 +30,7 @@ type TicketItemProps = {
 const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
 
   const handleDelete = async (formData: FormData) => {
+    "use server";
     await deleteTicket(ticket.id);
   }
 
@@ -55,6 +58,18 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
     </form>
   );
 
+  const moreMenu = (
+    <TicketMooreMenu
+      trigger={
+        <Button variant="outline" size="icon" asChild className="p-2">
+          <FontAwesomeIcon icon={faEllipsisVertical} />
+        </Button>
+      }
+      ticket={ticket}
+    />
+  );
+
+
   return (
     <div
       className={clsx("w-full flex gap-x-1", {
@@ -64,9 +79,9 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
     >
       <Card key={ticket.id} className="w-full">
         <CardHeader>
-          <CardTitle className="flex gap-x-2">
-            <span><FontAwesomeIcon icon={TICKET_ICONS[ticket.status]} /></span>
-            <span className="truncate">{ticket.title}</span>
+          <CardTitle className="flex gap-x-4 items-center">
+            <div className="size-8"><FontAwesomeIcon icon={TICKET_ICONS[ticket.status]} size="2xl"/></div>
+            <div className="truncate text-2xl font-semibold">{ticket.title}</div>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -89,6 +104,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
             <>
               {editButton}
               {deleteButton}
+              {moreMenu}
             </>
           ) : (
             <>
