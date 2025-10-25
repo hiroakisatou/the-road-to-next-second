@@ -1,4 +1,4 @@
-import { PrismaClient, TicketStatus } from "@prisma/client";
+import { TicketStatus } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
 
@@ -75,7 +75,7 @@ const seed = async () => {
   await prisma.ticket.deleteMany();
 
   await prisma.ticket.createMany({
-    // @ts-expect-error
+
     data: tickets,
   });
 

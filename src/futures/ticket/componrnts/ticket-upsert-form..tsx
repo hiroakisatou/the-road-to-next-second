@@ -90,7 +90,7 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
           <FieldError actionState={actionState} fieldName="deadline" />
         </div>
         <div className="w-1/2">
-          <Label htmlFor={bountyId}>Bounty</Label>
+          <Label htmlFor={bountyId}>Bounty ($)</Label>
           <Input
             id={bountyId}
             name="bounty"
