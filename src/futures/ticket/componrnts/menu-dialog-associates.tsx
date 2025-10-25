@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { Ticket } from "@prisma/client";
 import { useRef } from "react";
 
+import type { ActionState } from "@/components/form/action-state-type";
 import { ConfirmDialog } from "@/components/form/hooks/confirm-daialog";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
@@ -23,9 +24,11 @@ export type ImperativeHandleFromConfirmDialog = {
 
 const MenuDialogAssociates = ({ ticket, menuTrigger }: MenuDialogAssociatesProps) => {
 
-  const ticketketDleteHandler = async (_formData: FormData) => {
-    await deleteTicket(ticket.id);
+  const ticketketDleteHandler = async ():Promise<ActionState> => {
+    const result = await deleteTicket(ticket.id);
+    return result;
   };
+  
   const confirmDialogImperativeHandleRef = useRef<ImperativeHandleFromConfirmDialog | null>(null);
 
   const handleShowConfirmDialog = () => {

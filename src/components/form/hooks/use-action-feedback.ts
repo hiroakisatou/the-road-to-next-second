@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useEffectEvent, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import type { ActionState } from "../action-state-type";
 
@@ -31,5 +31,5 @@ export const useActionFeedback = (
     }
 
     prevTimestamp.current = actionState.timestamp;
-  }, [isUpdate, actionState, options.onSuccess, options.onError]);
+  }, [isUpdate, actionState, options]);
 };

@@ -1,7 +1,10 @@
 "use client";
 
-import { useImperativeHandle, useState } from "react";
+import { useActionState, useImperativeHandle, useState } from "react";
 
+import { type ActionState, EMPTY_ACTION_STATE } from "@/components/form/action-state-type";
+import { Form } from "@/components/form/form";
+import { SubmitButton } from "@/components/sujbmit-button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,14 +16,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 
 import type { ImperativeHandleFromConfirmDialog } from "@/futures/ticket/componrnts/menu-dialog-associates";
 
 type UseConfirmDialogArgs = {
   title?: string;
   description?: string;
-  action: (payload: FormData) => void;
+  action: () => Promise<ActionState>;
   trigger?: React.ReactElement;
   imperativeHandleRef: React.RefObject<ImperativeHandleFromConfirmDialog | null>;
 };
@@ -34,7 +36,11 @@ const ConfirmDialog = ({
 }: UseConfirmDialogArgs) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleSuccess = () => {
+    setIsOpen(false);
+  };
 
+  const [actionState, formAction, isPending] = useActionState(action, EMPTY_ACTION_STATE);
   useImperativeHandle(imperativeHandleRef, () => ({
     show: () => {
       setIsOpen(true);
@@ -55,9 +61,13 @@ const ConfirmDialog = ({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <form action={action}>
-              <Button type="submit">Confirm</Button>
-            </form>
+            <Form
+              action={formAction}
+              actionState={actionState}
+              onSuccess={handleSuccess}
+              >
+              <SubmitButton label="confirm" isPending={isPending}/>
+            </Form>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

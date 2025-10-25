@@ -25,12 +25,17 @@ const upsertTicketSchema = z.object({
 });
 
 const deleteTicket = async (id: string) => {
+try {
   await prisma.ticket.delete({
     where: {
       id,
     },
   });
-  await setCookiesByKey("toast", "Ticket deleted");
+} catch (error) {
+  return fromErrorToActionState(error);
+}
+  revalidatePath(ticketsPath());
+  await setCookiesByKey("toast", "Ticket successfully deleted");
   redirect(ticketsPath());
 };
 
