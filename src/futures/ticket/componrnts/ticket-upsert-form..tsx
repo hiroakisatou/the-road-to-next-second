@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-import { fromCent } from "@/lib/curency";
+import {  fromCentToTwoDecimalPlaces } from "@/lib/curency";
 
 import { upsertTicket } from "../actions";
 
@@ -60,7 +60,7 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
         name="title"
         type="text"
         defaultValue={
-          (actionState.payload?.get("title") as string) ?? ticket?.title
+          (actionState.payload?.get("title") as string) ?? ticket?.title ?? ""
         }
       />
       <FieldError actionState={actionState} fieldName="title" />
@@ -71,7 +71,8 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
         name="description"
         defaultValue={
           (actionState.payload?.get("description") as string) ??
-          ticket?.description
+          ticket?.description ??
+          ""
         }
       />
       <FieldError actionState={actionState} fieldName="description" />
@@ -83,7 +84,8 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
             name="deadline"
             defaultValue={
               (actionState.payload?.get("deadline") as string) ??
-              ticket?.deadline
+              ticket?.deadline ??
+              ""
             }
             imeprativeHandleRef={datePcikerImperativeHandleRef}
           />
@@ -98,7 +100,7 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
             step="0.01"
             defaultValue={
               (actionState.payload?.get("bounty") as string) ??
-              (ticket?.bounty ? fromCent(ticket.bounty) : "")
+              (ticket?.bounty ? fromCentToTwoDecimalPlaces(ticket.bounty) : "")
             }
           />
           <FieldError actionState={actionState} fieldName="bounty" />
