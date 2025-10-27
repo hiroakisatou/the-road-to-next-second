@@ -5,6 +5,13 @@ const getTickets = async () => {
     orderBy: {
       createdAt: "desc",
     },
+    include: {
+      user: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 };
 
@@ -12,6 +19,13 @@ const getTicket = async (id: string) => {
   return await prisma.ticket.findUnique({
     where: {
       id,
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
 };

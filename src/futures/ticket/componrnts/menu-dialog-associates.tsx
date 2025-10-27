@@ -12,8 +12,8 @@ import { deleteTicket } from "@/futures/ticket/actions";
 import { TicketMooreMenu } from "@/futures/ticket/componrnts/ticket-more-menu";
 
 type MenuDialogAssociatesProps = {
-    ticket: Ticket;
-    menuTrigger: React.ReactElement;
+  ticket: Ticket;
+  menuTrigger: React.ReactElement;
 };
 
 export type ImperativeHandleFromConfirmDialog = {
@@ -21,40 +21,41 @@ export type ImperativeHandleFromConfirmDialog = {
   hide: () => void;
 };
 
-
-const MenuDialogAssociates = ({ ticket, menuTrigger }: MenuDialogAssociatesProps) => {
-
-  const ticketketDleteHandler = async ():Promise<ActionState> => {
+const MenuDialogAssociates = ({
+  ticket,
+  menuTrigger,
+}: MenuDialogAssociatesProps) => {
+  const ticketketDleteHandler = async (): Promise<ActionState> => {
     const result = await deleteTicket(ticket.id);
     return result;
   };
-  
-  const confirmDialogImperativeHandleRef = useRef<ImperativeHandleFromConfirmDialog | null>(null);
+
+  const confirmDialogImperativeHandleRef =
+    useRef<ImperativeHandleFromConfirmDialog | null>(null);
 
   const handleShowConfirmDialog = () => {
-  confirmDialogImperativeHandleRef.current?.show();
-};
+    confirmDialogImperativeHandleRef.current?.show();
+  };
 
   const deleteButton = (
     <DropdownMenuItem onClick={handleShowConfirmDialog}>
-        <FontAwesomeIcon icon={faTrashCan} />
-        <span>Delete</span>
+      <FontAwesomeIcon icon={faTrashCan} />
+      <span>Delete</span>
     </DropdownMenuItem>
   );
   return (
     <>
-    <ConfirmDialog
-      action={ticketketDleteHandler}
-      imperativeHandleRef={confirmDialogImperativeHandleRef}
-    />
-    <TicketMooreMenu
-       ticket={ticket}
-       trigger={menuTrigger}
-       deleteButton={deleteButton}
-    />
+      <ConfirmDialog
+        action={ticketketDleteHandler}
+        imperativeHandleRef={confirmDialogImperativeHandleRef}
+      />
+      <TicketMooreMenu
+        ticket={ticket}
+        trigger={menuTrigger}
+        deleteButton={deleteButton}
+      />
     </>
   );
 };
-
 
 export { MenuDialogAssociates };

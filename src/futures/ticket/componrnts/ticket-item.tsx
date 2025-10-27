@@ -4,9 +4,9 @@ import {
   faPencil,
 } from "@awesome.me/kit-2c9d26a98e/icons/classic/regular";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import type { Ticket } from "@prisma/client";
 import clsx from "clsx";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,20 +17,28 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+import { setCookiesByKey } from "@/lib/cookies";
 import { toCurrencyFormCent } from "@/lib/curency";
 
+import { getCurrentUser } from "@/futures/auth/utils/auth-utils";
+import { isOwner } from "@/futures/auth/utils/is-owner";
 import { MenuDialogAssociates } from "@/futures/ticket/componrnts/menu-dialog-associates";
-import { ticketEditPath, ticketPath } from "@/path";
+import type { TicketWithUser } from "@/futures/ticket/types";
+import { signInPath, ticketEditPath, ticketPath } from "@/path";
 import { TICKET_ICONS } from "../constant";
 
 type TicketItemProps = {
-  ticket: Ticket;
+  ticket: TicketWithUser;
   isDetail?: boolean;
 };
 
-const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
-
-
+const TicketItem = async({ ticket, isDetail }: TicketItemProps) => {
+    const user = await getCurrentUser();
+    if (!user) {
+      setCookiesByKey("toast", "You need to be signed in to access this page");
+      redirect(signInPath());
+    }
+     const isTicketOwner = await isOwner(user, ticket);
 
   const detailButton = (
     <Button variant="outline" size="icon" asChild>
@@ -39,16 +47,15 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       </Link>
     </Button>
   );
-  const editButton = (
+  const editButton = isTicketOwner ? (
     <Button variant="outline" size="icon" asChild>
       <Link href={ticketEditPath(ticket.id)} aria-label="edit" role="button">
         <FontAwesomeIcon icon={faPencil} />
       </Link>
     </Button>
-  );
+  ) : null;
 
-
-  const moreMenu = (
+  const moreMenu = isTicketOwner ? (
     <MenuDialogAssociates
       menuTrigger={
         <Button variant="outline" size="icon" asChild className="p-2">
@@ -57,7 +64,7 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
       }
       ticket={ticket}
     />
-  );
+  ) : null;
 
   return (
     <div
@@ -87,7 +94,9 @@ const TicketItem = ({ ticket, isDetail }: TicketItemProps) => {
           </span>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">
+            {ticket.deadline} by {ticket.user.name}
+          </p>
           <p className="text-sm text-muted-foreground">
             {toCurrencyFormCent(ticket.bounty)}
           </p>

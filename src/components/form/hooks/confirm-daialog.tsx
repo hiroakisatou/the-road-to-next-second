@@ -2,7 +2,10 @@
 
 import { useActionState, useImperativeHandle, useState } from "react";
 
-import { type ActionState, EMPTY_ACTION_STATE } from "@/components/form/action-state-type";
+import {
+  type ActionState,
+  EMPTY_ACTION_STATE,
+} from "@/components/form/action-state-type";
 import { Form } from "@/components/form/form";
 import { SubmitButton } from "@/components/sujbmit-button";
 import {
@@ -32,7 +35,7 @@ const ConfirmDialog = ({
   description = "This action cannot be undone. Make sure you understand the consqquences.",
   action,
   trigger,
-  imperativeHandleRef
+  imperativeHandleRef,
 }: UseConfirmDialogArgs) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -40,7 +43,10 @@ const ConfirmDialog = ({
     setIsOpen(false);
   };
 
-  const [actionState, formAction, isPending] = useActionState(action, EMPTY_ACTION_STATE);
+  const [actionState, formAction, isPending] = useActionState(
+    action,
+    EMPTY_ACTION_STATE,
+  );
   useImperativeHandle(imperativeHandleRef, () => ({
     show: () => {
       setIsOpen(true);
@@ -65,8 +71,8 @@ const ConfirmDialog = ({
               action={formAction}
               actionState={actionState}
               onSuccess={handleSuccess}
-              >
-              <SubmitButton label="confirm" isPending={isPending}/>
+            >
+              <SubmitButton label="confirm" isPending={isPending} />
             </Form>
           </AlertDialogAction>
         </AlertDialogFooter>

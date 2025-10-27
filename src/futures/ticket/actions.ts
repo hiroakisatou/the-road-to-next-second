@@ -15,7 +15,9 @@ import { setCookiesByKey } from "@/lib/cookies";
 import { toCent } from "@/lib/curency";
 import { prisma } from "@/lib/prisma";
 
+import { getUserOrRedirect } from "@/futures/auth/utils/auth-utils";
 import { ticketPath, ticketsPath } from "@/path";
+import { isOwner } from "../auth/utils/is-owner";
 
 const upsertTicketSchema = z.object({
   title: z.string().min(1).max(192),
@@ -25,15 +27,29 @@ const upsertTicketSchema = z.object({
 });
 
 const deleteTicket = async (id: string) => {
-try {
-  await prisma.ticket.delete({
-    where: {
-      id,
-    },
-  });
-} catch (error) {
-  return fromErrorToActionState(error);
-}
+  const user = await getUserOrRedirect();
+
+  try {
+    const ticket = await prisma.ticket.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!ticket) {
+      return fromErrorToActionState(new Error("Ticket not found"));
+    }
+    if (!await isOwner(user, ticket)) {
+      return fromErrorToActionState(new Error("You are not the owner of this ticket"));
+    }
+    await prisma.ticket.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    return fromErrorToActionState(error);
+  }
   revalidatePath(ticketsPath());
   await setCookiesByKey("toast", "Ticket successfully deleted");
   redirect(ticketsPath());
@@ -45,6 +61,8 @@ const upsertTicket = async (
   formData: FormData,
 ) => {
   try {
+    const user = await getUserOrRedirect();
+
     const data = upsertTicketSchema.parse({
       title: formData.get("title"),
       description: formData.get("description"),
@@ -55,6 +73,7 @@ const upsertTicket = async (
     const dbData = {
       ...data,
       bounty: toCent(data.bounty),
+      userId: user.id,
     };
 
     await prisma.ticket.upsert({
@@ -78,7 +97,17 @@ const upsertTicket = async (
 
 const updateTicketStatus = async (id: string, status: TicketStatus) => {
   // await new Promise((resolve) => setTimeout(resolve, 2000));
+  const user = await getUserOrRedirect();
   try {
+    const ticket = await prisma.ticket.findUnique({
+      where: { id },
+    });
+    if (!ticket) {
+      return fromErrorToActionState(new Error("Ticket not found"));
+    }
+    if (!await isOwner(user, ticket)) {
+      return fromErrorToActionState(new Error("You are not the owner of this ticket"));
+    }
     await prisma.ticket.update({
       where: { id },
       data: { status },

@@ -1,8 +1,13 @@
 import type { Ticket } from "@prisma/client";
-import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
 
 import { CardCompact } from "@/components/card-compact";
 
+import { setCookiesByKey } from "@/lib/cookies";
+
+import {  getUserOrRedirect } from "@/futures/auth/utils/auth-utils";
+import { isOwner } from "@/futures/auth/utils/is-owner";
 import { TicketUpsertForm } from "@/futures/ticket/componrnts/ticket-upsert-form.";
 import { getTicket } from "@/futures/ticket/queries";
 
@@ -15,8 +20,16 @@ type EditTicketPageProps = {
 const EditTicketPage = async ({ params }: EditTicketPageProps) => {
   const { ticketId } = await params;
   const ticket: Ticket | null = await getTicket(ticketId);
-
   if (!ticket) {
+    notFound();
+  }
+  const user = await getUserOrRedirect();
+  if (!isOwner(user, ticket)) {
+    const referer = (await headers()).get("referer");
+    if (referer?.includes("/tickets")) {
+      await setCookiesByKey("toast", "You are not the owner of this ticket");
+      redirect(referer);
+    }
     notFound();
   }
   return (

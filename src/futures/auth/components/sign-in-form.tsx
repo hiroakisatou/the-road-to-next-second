@@ -12,20 +12,28 @@ import { Label } from "@/components/ui/label";
 import { signIn } from "@/futures/auth/actions/sign-in";
 
 const SignInForm = () => {
-  const [actionState, action, isPending] = useActionState(signIn, EMPTY_ACTION_STATE);
-
+  const [actionState, action, isPending] = useActionState(
+    signIn,
+    EMPTY_ACTION_STATE,
+  );
 
   return (
     <Form action={action} actionState={actionState}>
       <Label htmlFor="email">Email</Label>
-      <Input type="email" name="email" placeholder="Email"
-       defaultValue={actionState.payload?.get("email") as string}
+      <Input
+        type="email"
+        name="email"
+        placeholder="Email"
+        defaultValue={actionState.payload?.get("email") as string}
       />
       <FieldError actionState={actionState} fieldName="email" />
 
       <Label htmlFor="password">Password</Label>
-      <Input type="password" name="password" placeholder="Password"
-       defaultValue={actionState.payload?.get("password") as string}
+      <Input
+        type="password"
+        name="password"
+        placeholder="Password"
+        defaultValue={actionState.payload?.get("password") as string}
       />
       <FieldError actionState={actionState} fieldName="password" />
 

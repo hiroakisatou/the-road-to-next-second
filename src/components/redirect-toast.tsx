@@ -9,7 +9,7 @@ import { deleteCookiesByKey, getCookiesByKey } from "@/lib/cookies";
 export const RedirectToast = () => {
   const pathname = usePathname();
 
-// biome-ignore lint/correctness/useExhaustiveDependencies: this dependency is intentional
+  // biome-ignore lint/correctness/useExhaustiveDependencies: this dependency is intentional
   useEffect(() => {
     const showCookieToast = async () => {
       const message = await getCookiesByKey("toast");

@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { auth } from "@/futures/auth/utils/auth";
 
 async function createTestUser() {
   try {
@@ -21,9 +21,3 @@ async function createTestUser() {
 }
 
 createTestUser();
-
-
-
-
-
-

@@ -1,6 +1,14 @@
+import type { User } from "@prisma/client";
 import { TicketStatus } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
+
+import { auth } from "@/futures/auth/utils/auth";
+
+const userData = {
+  name: "admin",
+  email: "admin@example.com",
+};
 
 const tickets = [
   {
@@ -73,11 +81,36 @@ const seed = async () => {
   console.log("DB seeding started...");
 
   await prisma.ticket.deleteMany();
+  await prisma.user.deleteMany();
 
-  await prisma.ticket.createMany({
+  try {
+    await auth.api.signUpEmail({
+      body: {
+        email: userData.email,
+        password: "test1234",
+        name: userData.name,
+      },
+    });
 
-    data: tickets,
-  });
+    const createdUser: User | null = await prisma.user.findUnique({
+      where: {
+        email: userData.email,
+      },
+    });
+
+    if (!createdUser) {
+      throw new Error(`User ${userData.email} not found`);
+    }
+
+    await prisma.ticket.createMany({
+      data: tickets.map((ticket) => ({
+        ...ticket,
+        userId: createdUser.id,
+      })),
+    });
+  } catch (error) {
+    console.error(`Error creating user ${userData.email}:`, error);
+  }
 
   const t1 = performance.now();
   console.log(`DB seeding finished in ${t1 - t0} milliseconds`);

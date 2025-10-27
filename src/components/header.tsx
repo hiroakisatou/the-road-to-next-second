@@ -2,35 +2,45 @@ import { faMessageCheck } from "@awesome.me/kit-2c9d26a98e/icons/classic/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
-import { getSession } from "@/futures/auth/actions/get-session";
-import { signOut } from "@/futures/auth/actions/sign-out";
-import { homePath, signInPath, signUpPath, ticketsPath } from "@/path";
 import { ThemeSwitcher } from "./thmes/theme-switcher";
 import { Button, buttonVariants } from "./ui/button";
+import { signOut } from "@/futures/auth/actions/sign-out";
+import { getSession } from "@/futures/auth/utils/auth-utils";
+import { homePath, signInPath, signUpPath, ticketsPath } from "@/path";
 
 const Header = async () => {
+  const session = await getSession();
 
-    const session = await getSession();
-
-    const navItems = session ? (
-      <>
+  const navItems = session ? (
+    <>
       <form action={signOut}>
-        <Button type="submit" variant="outline">Sing out</Button>
+        <Button type="submit" variant="outline">
+          Sing out
+        </Button>
       </form>
-      <Link href={ticketsPath()} className={buttonVariants({ variant: "outline"})}>
+      <Link
+        href={ticketsPath()}
+        className={buttonVariants({ variant: "outline" })}
+      >
         Tickets
       </Link>
-      </>
-    ) : (
-      <>
-      <Link href={signInPath()} className={buttonVariants({ variant: "outline"})}>
+    </>
+  ) : (
+    <>
+      <Link
+        href={signInPath()}
+        className={buttonVariants({ variant: "outline" })}
+      >
         Sign In
       </Link>
-      <Link href={signUpPath()} className={buttonVariants({ variant: "default"})}>
+      <Link
+        href={signUpPath()}
+        className={buttonVariants({ variant: "default" })}
+      >
         Sign Up
       </Link>
-      </>
-    );
+    </>
+  );
 
   return (
     <nav
@@ -54,7 +64,9 @@ const Header = async () => {
       </div>
       <div className="flex align-items-center justify-center gap-x-2">
         <ThemeSwitcher />
-        <div className="flex align-items-center justify-center gap-x-2">{navItems}</div>
+        <div className="flex align-items-center justify-center gap-x-2">
+          {navItems}
+        </div>
       </div>
     </nav>
   );

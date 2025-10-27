@@ -21,8 +21,11 @@ type TicketMooreMenuProps = {
   deleteButton: React.ReactElement;
 };
 
-const TicketMooreMenu = ({ ticket, trigger, deleteButton }: TicketMooreMenuProps) => {
-
+const TicketMooreMenu = ({
+  ticket,
+  trigger,
+  deleteButton,
+}: TicketMooreMenuProps) => {
   const handleUpdateTicketStatus = async (value: string) => {
     const promise = updateTicketStatus(ticket.id, value as TicketStatus);
 

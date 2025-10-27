@@ -5,7 +5,6 @@ import { CardCompact } from "@/components/card-compact";
 import { SignUpForm } from "@/futures/auth/components/sign-up-foram";
 import { signInPath } from "@/path";
 
-
 const SignUpPage = () => {
   return (
     <div className="flex-1 flex flex-col justify-center items-center">
