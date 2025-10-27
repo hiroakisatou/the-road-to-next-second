@@ -2,10 +2,9 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { setCookiesByKey } from "@/lib/cookies";
 
 import { auth } from "@/futures/auth/utils/auth";
-import { signInPath } from "@/path";
+import { notSignInPath } from "@/path";
 
 const getSession = async () => {
   try {
@@ -18,6 +17,11 @@ const getSession = async () => {
     console.error("Error getting session:", error);
     return null;
   }
+};
+
+const sessionIsActive = async () => {
+  const session = await getSession();
+  return session !== null;
 };
 
 const getCurrentUser = async () => {
@@ -36,10 +40,9 @@ const getCurrentUser = async () => {
 const getUserOrRedirect = async () => {
   const user = await getCurrentUser();
   if (!user) {
-    await setCookiesByKey("toast", "You need to be signed in to access this page");
-    redirect(signInPath());
+    redirect(notSignInPath());
   }
   return user;
 };
 
-export { getCurrentUser, getSession, getUserOrRedirect };
+export { getCurrentUser, getSession, getUserOrRedirect, sessionIsActive };

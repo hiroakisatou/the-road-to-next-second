@@ -4,9 +4,11 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --animated-fade-from-top: fade-from-top 0.5s ease-out;
+  --animated-fade-from-top: fade-from-top 2s ease-out;
+  ---animated-sidebar-left: sidebar-from-left 2s ease-out;
 
-  @keyframes fade-from-top {
+  @keyframes
+  fade-from-top {
     from {
       opacity: 0;
       transform: translateY(-16px);
@@ -14,6 +16,14 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+  @keyframes sidebar-from-left {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
     }
   }
 }

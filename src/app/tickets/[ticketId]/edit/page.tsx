@@ -6,7 +6,7 @@ import { CardCompact } from "@/components/card-compact";
 
 import { setCookiesByKey } from "@/lib/cookies";
 
-import {  getUserOrRedirect } from "@/futures/auth/utils/auth-utils";
+import {  getCurrentUser } from "@/futures/auth/utils/auth-utils";
 import { isOwner } from "@/futures/auth/utils/is-owner";
 import { TicketUpsertForm } from "@/futures/ticket/componrnts/ticket-upsert-form.";
 import { getTicket } from "@/futures/ticket/queries";
@@ -23,7 +23,10 @@ const EditTicketPage = async ({ params }: EditTicketPageProps) => {
   if (!ticket) {
     notFound();
   }
-  const user = await getUserOrRedirect();
+const user = await getCurrentUser();
+  if (!user) {
+    notFound();
+  }
   if (!isOwner(user, ticket)) {
     const referer = (await headers()).get("referer");
     if (referer?.includes("/tickets")) {

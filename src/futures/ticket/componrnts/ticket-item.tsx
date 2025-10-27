@@ -6,7 +6,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,14 +16,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { setCookiesByKey } from "@/lib/cookies";
 import { toCurrencyFormCent } from "@/lib/curency";
 
 import { getCurrentUser } from "@/futures/auth/utils/auth-utils";
 import { isOwner } from "@/futures/auth/utils/is-owner";
 import { MenuDialogAssociates } from "@/futures/ticket/componrnts/menu-dialog-associates";
 import type { TicketWithUser } from "@/futures/ticket/types";
-import { signInPath, ticketEditPath, ticketPath } from "@/path";
+import { ticketEditPath, ticketPath } from "@/path";
 import { TICKET_ICONS } from "../constant";
 
 type TicketItemProps = {
@@ -34,19 +32,19 @@ type TicketItemProps = {
 
 const TicketItem = async({ ticket, isDetail }: TicketItemProps) => {
     const user = await getCurrentUser();
-    if (!user) {
-      setCookiesByKey("toast", "You need to be signed in to access this page");
-      redirect(signInPath());
-    }
-     const isTicketOwner = await isOwner(user, ticket);
+    let isTicketOwner = false;
 
-  const detailButton = (
+    if (user) {
+      isTicketOwner = await isOwner(user, ticket);
+    }
+
+  const detailButton = user ? (
     <Button variant="outline" size="icon" asChild>
       <Link href={ticketPath(ticket.id)} aria-label="view detail" role="button">
         <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
       </Link>
     </Button>
-  );
+  ) : null;
   const editButton = isTicketOwner ? (
     <Button variant="outline" size="icon" asChild>
       <Link href={ticketEditPath(ticket.id)} aria-label="edit" role="button">

@@ -1,7 +1,17 @@
+"use server";
+
 import { prisma } from "../../lib/prisma";
 
-const getTickets = async () => {
+type GetTicketsProps = {
+  userId?: string;
+};
+const getTickets = async (
+  { userId }: GetTicketsProps
+) => {
   return await prisma.ticket.findMany({
+    where: {
+      userId,
+    },
     orderBy: {
       createdAt: "desc",
     },
@@ -30,4 +40,5 @@ const getTicket = async (id: string) => {
   });
 };
 
-export { getTickets, getTicket };
+export { getTicket, getTickets };
+

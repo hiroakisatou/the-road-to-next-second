@@ -10,6 +10,7 @@ import { fromErrorToActionState } from "@/components/form/utils/to-action-state"
 import { setCookiesByKey } from "@/lib/cookies";
 
 import { auth } from "@/futures/auth/utils/auth";
+import { sessionIsActive } from "@/futures/auth/utils/auth-utils";
 import { ticketsPath } from "@/path";
 
 const signInSchema = z.object({
@@ -18,6 +19,11 @@ const signInSchema = z.object({
 });
 
 const signIn = async (_actionState: ActionState, formData: FormData) => {
+  const isSessionActive = await sessionIsActive();
+  if (isSessionActive) {
+    await setCookiesByKey("toast", "You are already signed in");
+    redirect(ticketsPath());
+  }
   try {
     const { email, password } = signInSchema.parse({
       email: formData.get("email"),

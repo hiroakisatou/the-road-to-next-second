@@ -9,4 +9,4 @@ const isOwner = async (user: AuthUser, entity: Entity) => {
   return user.id === entity.userId;
 };
 
-export { isOwner };
+export { isOwner, type AuthUser };

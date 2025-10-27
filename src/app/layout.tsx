@@ -8,6 +8,7 @@ import { Toaster } from "sonner";
 
 import { Header } from "@/components/header";
 import { RedirectToast } from "@/components/redirect-toast";
+import { SidebarWrapper } from "@/components/sidebar/sidebar-wrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
   description: "My Road to Next application...",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,17 +32,20 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased`}>
         <ChangebleThemeProvider>
           <Header />
-          <main
-            className="
-            min-h-screen flex-1
-            overflow-y-auto overflow-x-hidden
-            py-24 px-4 md:px-8
-            bg-secondary/20
-            flex flex-col
-            "
-          >
-            {children}
-          </main>
+          <div className="flex h-screen overflow-hidden border-collapse">
+            <SidebarWrapper />
+            <main
+              className="
+              min-h-screen flex-1
+              overflow-y-auto overflow-x-hidden
+              py-24 px-4 md:px-8
+              bg-secondary/20
+              flex flex-col
+              "
+            >
+              {children}
+            </main>
+          </div>
           <Toaster />
           <RedirectToast />
         </ChangebleThemeProvider>

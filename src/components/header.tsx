@@ -1,30 +1,23 @@
-import { faMessageCheck } from "@awesome.me/kit-2c9d26a98e/icons/classic/solid";
+import { faMessageCheck, faRightFromBracket } from "@awesome.me/kit-2c9d26a98e/icons/classic/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
-import { ThemeSwitcher } from "./thmes/theme-switcher";
-import { Button, buttonVariants } from "./ui/button";
 import { signOut } from "@/futures/auth/actions/sign-out";
 import { getSession } from "@/futures/auth/utils/auth-utils";
-import { homePath, signInPath, signUpPath, ticketsPath } from "@/path";
+import { homePath, signInPath, signUpPath } from "@/path";
+import { ThemeSwitcher } from "./thmes/theme-switcher";
+import { Button, buttonVariants } from "./ui/button";
 
 const Header = async () => {
   const session = await getSession();
 
   const navItems = session ? (
-    <>
       <form action={signOut}>
         <Button type="submit" variant="outline">
           Sing out
+          <FontAwesomeIcon icon={faRightFromBracket} />
         </Button>
       </form>
-      <Link
-        href={ticketsPath()}
-        className={buttonVariants({ variant: "outline" })}
-      >
-        Tickets
-      </Link>
-    </>
   ) : (
     <>
       <Link
