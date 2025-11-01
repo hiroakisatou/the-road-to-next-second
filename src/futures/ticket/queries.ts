@@ -1,16 +1,24 @@
 "use server";
 
+import type { SearchFilterParams } from "@/futures/ticket/types";
 import { prisma } from "../../lib/prisma";
 
 type GetTicketsProps = {
   userId?: string;
+  filter: SearchFilterParams;
 };
 const getTickets = async (
-  { userId }: GetTicketsProps
+  { userId, filter }: GetTicketsProps
 ) => {
   return await prisma.ticket.findMany({
     where: {
       userId,
+      ...filter.q && {
+        title: {
+          contains: filter.q,
+          mode: "insensitive",
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",

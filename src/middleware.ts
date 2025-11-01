@@ -13,7 +13,9 @@ const middleware = async (request: NextRequest) => {
     "/tickets",
     "/tickets/:path*",
     "/tickets/:path*/edit",
-    "/tickets/:path*/delete",
+    "account/password",
+    "account/profile",
+
   ];
   const isProtectedRoute = protectedRouds.some((route) =>
     request.nextUrl.pathname.startsWith(route),
@@ -34,7 +36,8 @@ export const config = {
     "/tickets",
     "/tickets/:path*",
     "/tickets/:path*/edit",
-    "/tickets/:path*/delete",
+    "/account/password",
+    "/account/profile",
   ],
 };
 

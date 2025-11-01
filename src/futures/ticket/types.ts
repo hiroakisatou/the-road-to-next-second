@@ -7,3 +7,7 @@ export type TicketWithUser = Prisma.TicketGetPayload<{
     };
   };
 }>;
+
+export type SearchFilterParams = {
+  q?: string;
+};
