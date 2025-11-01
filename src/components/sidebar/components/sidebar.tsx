@@ -1,17 +1,28 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+import { SidebarItem } from "@/components/sidebar/components/sidebar-item";
 import { NavItems } from "@/components/sidebar/constants";
-import { SidebarItem } from "@/components/sidebar/sidebar-item";
 
 import { cn } from "@/lib/utils";
+
+import { getActivePath } from "@/futures/auth/utils/get-active-path";
+import { signInPath, signUpPath } from "@/path";
 
 type SidebarProps = {
   isLoggedIn: boolean;
 };
 
 const Sidebar =  ({ isLoggedIn }: SidebarProps) => {
+  const pathName = usePathname();
+
+  const { activeIndex } = getActivePath(
+    pathName,
+    NavItems.map((item) => item.href),
+    [signInPath(), signUpPath()],
+  );
 
  const [isTransition, setTransition] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +39,7 @@ const Sidebar =  ({ isLoggedIn }: SidebarProps) => {
   return (
     <aside
       className={cn(
-        "animated-sidebar-left",
+        "animate-sidebar-left",
         "h-screen border-r pt-24",
         isTransition && "duration-200",
         isOpen ? "w-[78px] md:w-60" : "w-[78px]"
@@ -38,8 +49,13 @@ const Sidebar =  ({ isLoggedIn }: SidebarProps) => {
     >
       <div className="px-3 py-2">
         <nav className="space-y-2">
-          {NavItems.map((navItem) => (
-            <SidebarItem key={navItem.title} navItem={navItem} isOpen={isOpen} />
+          {NavItems.map((navItem, index) => (
+            <SidebarItem
+            key={navItem.title}
+            navItem={navItem}
+            isOpen={isOpen}
+            isActive={index === activeIndex}
+            />
           ))}
         </nav>
       </div>

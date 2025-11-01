@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CardCompact } from "@/components/card-compact";
 
 import { SignInForm } from "@/futures/auth/components/sign-in-form";
-import { passwordForgotPath, signUpPath } from "@/path";
+import { passwordForgetPath, signUpPath } from "@/path";
 
 const SignInPage = () => {
   return (
@@ -20,7 +20,7 @@ const SignInPage = () => {
             </Link>
 
             <Link
-              href={passwordForgotPath()}
+              href={passwordForgetPath()}
               className="text-sm text-muted-foreground"
             >
               Forgot your password?

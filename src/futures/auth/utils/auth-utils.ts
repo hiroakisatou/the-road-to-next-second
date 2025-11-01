@@ -6,6 +6,9 @@ import { redirect } from "next/navigation";
 import { auth } from "@/futures/auth/utils/auth";
 import { notSignInPath } from "@/path";
 
+export type Session = Awaited<ReturnType<typeof auth.api.getSession>>;
+export type User = NonNullable<Session>["user"];
+
 const getSession = async () => {
   try {
     const session = await auth.api.getSession({

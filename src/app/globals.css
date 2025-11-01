@@ -3,9 +3,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-  --animated-fade-from-top: fade-from-top 2s ease-out;
-  ---animated-sidebar-left: sidebar-from-left 2s ease-out;
+@theme inline{
+  --animate-fade-from-top: fade-from-top 2s ease-out;
+  ---animate-sidebar-left: sidebar-from-left 2s ease-out;
 
   @keyframes
   fade-from-top {
@@ -20,9 +20,11 @@
   }
   @keyframes sidebar-from-left {
     from {
+      opacity: 0;
       transform: translateX(-100%);
     }
     to {
+      opacity: 1;
       transform: translateX(0);
     }
   }

@@ -8,7 +8,7 @@ import { Toaster } from "sonner";
 
 import { Header } from "@/components/header";
 import { RedirectToast } from "@/components/redirect-toast";
-import { SidebarWrapper } from "@/components/sidebar/sidebar-wrapper";
+import { SidebarWrapper } from "@/components/sidebar/components/sidebar-wrapper";
 
 const inter = Inter({
   variable: "--font-inter",

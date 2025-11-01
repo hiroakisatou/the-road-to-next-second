@@ -17,7 +17,7 @@ const TicketsPage = async () => {
       <CardCompact
         title="Create Ticket"
         description="A new ticket will b e created"
-        className="w-full max-w-[420px] self-center"
+        className="w-full max-w-[420px] self-center animate-fade-from-top"
         content={<TicketUpsertForm />}
       />
       <Suspense fallback={<Spinner />}>

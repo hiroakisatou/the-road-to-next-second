@@ -1,23 +1,19 @@
-import { faMessageCheck, faRightFromBracket } from "@awesome.me/kit-2c9d26a98e/icons/classic/solid";
+import { faMessageCheck } from "@awesome.me/kit-2c9d26a98e/icons/classic/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
-import { signOut } from "@/futures/auth/actions/sign-out";
-import { getSession } from "@/futures/auth/utils/auth-utils";
+import { AccountDropdown } from "@/components/account-dropdown";
+
+import { getCurrentUser } from "@/futures/auth/utils/auth-utils";
 import { homePath, signInPath, signUpPath } from "@/path";
 import { ThemeSwitcher } from "./thmes/theme-switcher";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 
 const Header = async () => {
-  const session = await getSession();
+  const user = await getCurrentUser();
 
-  const navItems = session ? (
-      <form action={signOut}>
-        <Button type="submit" variant="outline">
-          Sing out
-          <FontAwesomeIcon icon={faRightFromBracket} />
-        </Button>
-      </form>
+  const navItems = user ? (
+    <AccountDropdown user={user} />
   ) : (
     <>
       <Link
