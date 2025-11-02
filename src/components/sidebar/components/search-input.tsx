@@ -56,11 +56,12 @@ const handleClear = () => {
   return (
     <div className="flex flex-col items-ceneter justify-start gap-y-2">
       <Label htmlFor="search" className="block font-medium">Search tickets by title</Label>
-      <div className="flex items-center justify-start w-[380px]">
+      <div className="flex items-center justify-start w-auto">
         <Input name="search" placeholder={placeholder} onChange={handleChange} value={value} className="bg-input dark:bg-input"/>
          <Button variant="ghost" size="icon" onClick={handleClear} aria-label="Clear search"
-         className={cn("bg-secondary/30 dark:bg-secondary/30 text-secondary-foreground dark:text-secondary-foreground/80",
-          !value && "hidden"
+         className={cn("bg-secondary/30 dark:bg-secondary/30 text-secondary-foreground dark:text-secondary-foreground/80 opacity-100",
+          !value && "opacity-0",
+          "transition-opacity duration-300"
           )}>
           <FontAwesomeIcon icon={faDeleteLeft} />
         </Button>

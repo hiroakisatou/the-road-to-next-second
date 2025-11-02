@@ -1,11 +1,11 @@
 "use server";
 
-import type { SearchFilterParams } from "@/futures/ticket/types";
+import type { FilterAndOrderParams } from "@/futures/ticket/types";
 import { prisma } from "../../lib/prisma";
 
 type GetTicketsProps = {
   userId?: string;
-  filter: SearchFilterParams;
+  filter: FilterAndOrderParams;
 };
 const getTickets = async (
   { userId, filter }: GetTicketsProps
@@ -21,7 +21,8 @@ const getTickets = async (
       },
     },
     orderBy: {
-      createdAt: "desc",
+      ...(filter.s === undefined && { createdAt: "desc" }),
+      ...(filter.s === "bounty" && { bounty: "desc" }),
     },
     include: {
       user: {

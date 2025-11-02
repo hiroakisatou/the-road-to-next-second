@@ -7,10 +7,10 @@ import { Spinner } from "@/components/spinner";
 import { getUserOrRedirect } from "@/futures/auth/utils/auth-utils";
 import { TicketList } from "@/futures/ticket/componrnts/ticket-list";
 import { TicketUpsertForm } from "@/futures/ticket/componrnts/ticket-upsert-form.";
-import type { SearchFilterParams } from "@/futures/ticket/types";
+import type { FilterAndOrderParams } from "@/futures/ticket/types";
 
 type TicketsPageProps = {
-  searchParams: Promise<SearchFilterParams>;
+  searchParams: Promise<FilterAndOrderParams>;
 };
 
 const TicketsPage = async ({ searchParams }: TicketsPageProps) => {

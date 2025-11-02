@@ -8,6 +8,8 @@ export type TicketWithUser = Prisma.TicketGetPayload<{
   };
 }>;
 
-export type SearchFilterParams = {
+
+export type FilterAndOrderParams = {
   q?: string;
+  s?: string;
 };
